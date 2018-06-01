@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/video.js/6.7.3/video-js.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/video.js/6.7.3/video.js"></script>
+  <script src="https://unpkg.com/@videojs/http-streaming@1.0.2/dist/videojs-http-streaming.js"></script>
+  <title>HLS</title>
+</head>
+<body>
+    <div class="container">
+      <div class="col-md-12">
+        <div class="loginpage" style="display:none">
+          <h2 class="text-center">Welcome to OG m3u8 streaming with Chat</h2>
+          <div class="form-group">
+            <div class="col-md-12">
+              <input type="text" class="form-control" placeholder="Avatar Name" value="test_player" id="avatar_name">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-12">
+              <input type="text" class="form-control" placeholder="Username" value="test59" id="client">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-md-12">
+              <button type="button" id="login" class="btn btn-primary">Login</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="showtables" style="display:none">
+            <h2>Show Tables</h2>
+            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                <div class="panel panel-default">
+                  <div class="panel-heading" role="tab" id="headingOne">
+                    <h4 class="panel-title">
+                      <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Classic
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                    <div class="panel-body">
+
+                    </div>
+                  </div>
+                </div>
+                <div class="panel panel-default">
+                  <div class="panel-heading" role="tab" id="headingTwo">
+                    <h4 class="panel-title">
+                      <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Grand
+                      </a>
+                    </h4>
+                  </div>
+                  <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                    <div class="panel-body">
+                      <ul class="list-unstyled" id="Grandlist" data-id="Grand">
+                        <li><button type="button" class="btn btn-success" style="width:100%;margin-bottom:5px;" data-id="1">Grand 1</button></li>
+                        <li><button type="button" class="btn btn-success" style="width:100%;margin-bottom:5px;" data-id="2">Grand 2</button></li>
+                        <li><button type="button" class="btn btn-success" style="width:100%;margin-bottom:5px;" data-id="3">Grand 3</button></li>
+                        <li><button type="button" class="btn btn-success" style="width:100%;margin-bottom:5px;" data-id="5">Grand 5</button></li>
+                        <li><button type="button" class="btn btn-success" style="width:100%;margin-bottom:5px;" data-id="6">Grand 6</button></li>
+                        <li><button type="button" class="btn btn-success" style="width:100%;margin-bottom:5px;" data-id="7">Grand 7</button></li>
+                        <li><button type="button" class="btn btn-success" style="width:100%;margin-bottom:5px;" data-id="8">Grand 8</button></li>
+                        <li><button type="button" class="btn btn-success" style="width:100%;margin-bottom:5px;" data-id="9">Grand 9</button></li>
+                        <li><button type="button" class="btn btn-success" style="width:100%;margin-bottom:5px;" data-id="10">Grand 10</button></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div id="showvideo" style="display:none">
+            <video-js id="ng-player" style="height: 480px;width: 320px;"></video-js>
+            <div class="col-md-12">
+              <textarea name="" id="message" cols="5" class="form-control"></textarea>
+              <button type="button" id="sendmessage" class="btn btn-primary">Send</button>
+            </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script>
+        var socket = io.connect('http://chat.oriental-game.com:3006');
+        // socket.on('connect', function () { // TIP: you can avoid listening on `connect` and listen on events directly too!
+        //   console.log('im connected')
+        // });
+        var obj = {};
+        $(document).ready(function(){
+            if ( $.isEmptyObject(obj) ){
+              $('.loginpage').show();
+            } else {
+              $('.showtables').show();
+            }
+        });
+        $(function(){
+          $('#login').click(function(){
+              obj.avatar_name = $('#avatar_name').val();
+              obj.client = $('#client').val();
+              if ( !$.isEmptyObject(obj) ){
+                $('.loginpage').hide();
+                $('.showtables').show();
+              }
+          });
+        })
+
+        $(function(){
+
+          $('#Grandlist').on('click','.btn-success',function(){
+            obj.channel =  'Grand';
+		        obj.table =  'Table ' + $(this).attr('data-id');
+            console.log(obj)
+            //socket.emit('send',obj)
+            var a = 'http://stream.oriental-game.com/hls/';
+            $('.showtables').hide()
+            $('#showvideo').show()
+            var player = videojs('ng-player');
+            var url = a + 'Ggame' + $(this).attr('data-id') + 'table' + 1 + '.m3u8';
+            var mimetype = 'application/x-mpegURL';
+
+            videojs.Hls.xhr.beforeRequest = function(options) {
+              return options;
+            };
+
+            player.ready(function() {
+              this.src({
+                src: url,
+                type: mimetype
+              });
+            });
+            player.play()
+          })
+        })
+
+        $(function(){
+          $('#sendmessage').click(function(){
+              obj.message = $('#message').val();
+              socket.emit('join room', obj);
+              socket.emit('send',obj)
+              $('#message').val('')
+          });
+        })
+    </script>
+</body>
+</html>
