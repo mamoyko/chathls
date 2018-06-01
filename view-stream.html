@@ -46,7 +46,17 @@
                   </div>
                   <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
                     <div class="panel-body">
-
+                      <ul class="list-unstyled" id="Classiclist" data-id="Classic">
+                        <li><button type="button" class="btn btn-success" style="width:100%;margin-bottom:5px;" data-id="1">Classic 1</button></li>
+                        <li><button type="button" class="btn btn-success" style="width:100%;margin-bottom:5px;" data-id="2">Classic 2</button></li>
+                        <li><button type="button" class="btn btn-success" style="width:100%;margin-bottom:5px;" data-id="3">Classic 3</button></li>
+                        <li><button type="button" class="btn btn-success" style="width:100%;margin-bottom:5px;" data-id="5">Classic 5</button></li>
+                        <li><button type="button" class="btn btn-success" style="width:100%;margin-bottom:5px;" data-id="6">Classic 6</button></li>
+                        <li><button type="button" class="btn btn-success" style="width:100%;margin-bottom:5px;" data-id="7">Classic 7</button></li>
+                        <li><button type="button" class="btn btn-success" style="width:100%;margin-bottom:5px;" data-id="8">Classic 8</button></li>
+                        <li><button type="button" class="btn btn-success" style="width:100%;margin-bottom:5px;" data-id="9">Classic 9</button></li>
+                        <li><button type="button" class="btn btn-success" style="width:100%;margin-bottom:5px;" data-id="10">Classic 10</button></li>
+                      </ul>
                     </div>
                   </div>
                 </div>
@@ -112,6 +122,35 @@
                 $('.showtables').show();
               }
           });
+        })
+
+
+        $(function(){
+
+          $('#Classiclist').on('click','.btn-success',function(){
+            obj.channel =  'Classic';
+		        obj.table =  'Table ' + $(this).attr('data-id');
+            console.log(obj)
+            //socket.emit('send',obj)
+            var a = 'http://stream.oriental-game.com/hls/';
+            $('.showtables').hide()
+            $('#showvideo').show()
+            var player = videojs('ng-player');
+            var url = a + 'game' + $(this).attr('data-id') + 'table' + 1 + '.m3u8';
+            var mimetype = 'application/x-mpegURL';
+
+            videojs.Hls.xhr.beforeRequest = function(options) {
+              return options;
+            };
+
+            player.ready(function() {
+              this.src({
+                src: url,
+                type: mimetype
+              });
+            });
+            player.play()
+          })
         })
 
         $(function(){
