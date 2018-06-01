@@ -1,11 +1,22 @@
 {
   "name": "m3u8-websockets",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mamoyko/chathls.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mamoyko/chathls/issues"
+  },
+  "homepage": "https://github.com/mamoyko/chathls#readme",
+  "description": "",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
 }
