@@ -118,11 +118,12 @@
         });
         function randomStings(){
           var text = "";
-          var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+          var possible = "0123456789";
           for (var i = 0; i < 12; i++){
             text += possible.charAt(Math.floor(Math.random() * possible.length));
           }
-          return 'Bf_' + text;
+          return 'ba_orx' + text;
+	  //orx131829393656837346
         }
         $(function(){
           $('#login').click(function(){
